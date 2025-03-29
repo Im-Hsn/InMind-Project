@@ -23,6 +23,6 @@ class BMWObjectDataset(Dataset):
         return image, labels
 
 image_dir = "../data/images"
-label_dir = "../data/labels"
+label_dir = "../data/labels/json"
 dataset = BMWObjectDataset(image_dir, label_dir)
 dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
