@@ -4,7 +4,7 @@ import matplotlib.patches as patches
 from load_dataset import dataset
 
 def visualize_sample(image, labels):
-    ax = plt.subplots(1)
+    fig, ax = plt.subplots(1)
     ax.imshow(image)
     
     for obj in labels:
