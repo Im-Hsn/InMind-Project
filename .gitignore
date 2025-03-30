@@ -1,2 +1,5 @@
-Project/dataset/split_data/
-Project/dataset/aug_data/
+# Ignore everything inside the 'dataset' folder
+Project/dataset/*
+
+# Except for the 'data' folder (original data)
+!/Project/dataset/data/

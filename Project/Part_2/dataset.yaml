@@ -1,0 +1,12 @@
+path: ../../dataset/yolo_data # added here another "../" because training is done inside the "yolov5" repo folder
+train: images/train
+val: images/val
+
+# Classes
+nc: 5
+names: 
+  0: tugger
+  1: cabinet
+  2: str
+  3: box
+  4: forklift
