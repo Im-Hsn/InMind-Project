@@ -63,8 +63,8 @@ def augment_dataset(image_dir, label_dir, output_dir):
             image_count += 1
 
 if __name__ == "__main__":
-    image_dir = "../data/images"
-    label_dir = "../data/labels/json"
-    output_dir = "../aug_data"
+    image_dir = "../dataset/data/images"
+    label_dir = "../dataset/data/labels/json"
+    output_dir = "../dataset/aug_data"
     
     augment_dataset(image_dir, label_dir, output_dir)
