@@ -208,6 +208,34 @@ I compared both models using various metrics:
 ![Confusion Matrix (Hyperparameter-tuned Model)](./assets/confusion_hyper.png)
 *Confusion matrix for the hyperparameter-tuned model*
 
+## Part 3: Model Deployment & Inference
+
+### 1. Export both models into an inference-friendly format (I will be using ONNX)
+
+Here's the basic command to export the model:
+
+
+python export.py --weights runs/train/normal_train/weights/best.pt --img-size 640 --batch-size 1 --dynamic --include onnx
+
+this command is for the normal model, and the following is for the hyperparameter tuned one:
+
+python export.py --weights runs/train/hyper_high_train/weights/best.pt --img-size 640 --batch-size 1 --dynamic --include onnx
+
+Explanation:
+
+--weights: Path to your trained model (e.g., best.pt).
+
+--img-size: The image size for inference (usually set to the same size as during training, e.g., 640).
+
+--batch-size: Batch size for the ONNX export (usually 1 for inference).
+
+--dynamic: Allows dynamic axes (useful for variable input sizes).
+
+--include onnx: Specifies the format you want to export to (in this case, ONNX).
+
+After running this command, an ONNX file will be saved in the runs/onnx/ directory, e.g., runs/onnx/exp/weights/model.onnx.
+
+
 ## Requirements
 
 The project dependencies are specified in `Project/requirements.txt`. The main dependencies include:
@@ -217,6 +245,8 @@ The project dependencies are specified in `Project/requirements.txt`. The main d
 - albumentations
 - numpy
 - tensorboard
+- onnx
+- onnxruntime
 
 ## Results
 

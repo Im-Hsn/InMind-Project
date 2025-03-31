@@ -4,3 +4,5 @@ matplotlib
 albumentations
 numpy
 tensorboard
+onnx==1.16.1
+onnxruntime
