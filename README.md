@@ -261,6 +261,8 @@ The project dependencies are specified in `Project/requirements.txt`. The main d
 - tensorboard
 - onnx
 - onnxruntime
+- fastapi
+- uvicorn
 
 ## Results
 

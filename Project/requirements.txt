@@ -6,3 +6,5 @@ numpy
 tensorboard
 onnx==1.16.1
 onnxruntime
+fastapi
+uvicorn
