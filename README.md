@@ -11,27 +11,27 @@ This repository contains the implementation of an object detection system for in
 
 ## Project Overview
 
-This project implements an object detection system for industrial environments. We train and evaluate YOLOv5 models with different hyperparameters to identify the best configuration for detecting industrial objects.
+This project implements an object detection system for industrial environments. I train and evaluate YOLOv5 models with different hyperparameters to identify the best configuration for detecting industrial objects.
 
 ## Part 1: Data Preparation & Visualization
 
 ### 1. Loading the Dataset
 
-We used PyTorch DataLoader to load our dataset and labels for efficient batch processing. The implementation can be found in `Project/Part_1/load_dataset.py`.
+I used PyTorch DataLoader to load my dataset and labels for efficient batch processing. The implementation can be found in `Project/Part_1/load_dataset.py`.
 
 ### 2. Visualization of Labeled Images
 
-A function was developed to visualize the dataset with bounding box annotations to verify the correctness of our labels. This is implemented in `Project/Part_1/visualize.py`.
+A function was developed to visualize the dataset with bounding box annotations to verify the correctness of my labels. This is implemented in `Project/Part_1/visualize.py`.
 
 ### 3. Dataset Augmentation
 
-We explored dataset augmentation using Albumentations library to improve model robustness. The augmentation includes horizontal flips, rotations, and contrast adjustments. Implementation is in `Project/Part_1/augment_dataset.py`.
+I explored dataset augmentation using Albumentations library to improve model robustness. The augmentation includes horizontal flips, rotations, and contrast adjustments. Implementation is in `Project/Part_1/augment_dataset.py`.
 
 ![Augmented Image Example 1](./assets/aug_im_bbox.png)
 *Augmented image with preserved bounding boxes*
 
 ![Augmented Image Example 2](./assets/aug_im_bbox2.png)
-*Another example of augmentation applied to our dataset*
+*Another example of augmentation applied to my dataset*
 
 ### 4. Dataset Splitting
 
@@ -41,7 +41,7 @@ The dataset was split into training and validation sets with an 80/20 ratio to e
 
 ### 1. YOLOv5 Model Training
 
-We used YOLOv5 for object detection. First, we cloned the YOLOv5 repository and installed its dependencies:
+I used YOLOv5 for object detection. First, I cloned the YOLOv5 repository and installed its dependencies:
 
 ```bash
 git clone https://github.com/ultralytics/yolov5
@@ -56,7 +56,7 @@ YOLOv5 requires annotations in a specific format. Each image has a corresponding
 <class_id> <x_center> <y_center> <width> <height>
 ```
 
-Our dataset was organized in the following structure:
+My dataset was organized in the following structure:
 ```
 /dataset
     /images
@@ -79,7 +79,7 @@ Our dataset was organized in the following structure:
             ...
 ```
 
-A custom YAML file (`Project/Part_2/dataset.yaml`) was created to define our dataset:
+A custom YAML file (`Project/Part_2/dataset.yaml`) was created to define my dataset:
 
 ```yaml
 path: ../../dataset/yolo_data
@@ -98,7 +98,7 @@ names:
 
 #### Training Process
 
-We trained the model using the following command:
+I trained the model using the following command:
 
 ```bash
 python train.py --img 640 --batch 16 --epochs 50 --data ../../dataset/yolo_data/dataset.yaml --weights yolov5s.pt --cache --device 0
@@ -127,7 +127,7 @@ Parameters explanation:
 
 ### 2. Model Evaluation and Hyperparameter Tuning
 
-After training the initial model, we evaluated its performance on the test dataset using:
+After training the initial model, I evaluated its performance on the test dataset using:
 
 ```bash
 python val.py --weights runs/train/exp/weights/best.pt --data ../../dataset/yolo_data/dataset.yaml --img 640
@@ -136,7 +136,7 @@ python val.py --weights runs/train/exp/weights/best.pt --data ../../dataset/yolo
 ![Model Evaluation](./assets/evaluate_model.png)
 *Evaluation results of the trained model on test dataset*
 
-We then retrained the model with different hyperparameters to improve performance:
+I then retrained the model with different hyperparameters to improve performance:
 
 ```bash
 python train.py --img 640 --batch 16 --epochs 50 --data ../../dataset/yolo_data/dataset.yaml --weights yolov5s.pt --cache --device 0 --hyp data/hyps/hyp.scratch-high.yaml
@@ -152,7 +152,7 @@ The `hyp.scratch-high.yaml` file contains hyperparameters with higher augmentati
 
 ### 3. TensorBoard Visualization
 
-To compare the performance of both models, we saved the training logs and used TensorBoard for visualization:
+To compare the performance of both models, I saved the training logs and used TensorBoard for visualization:
 
 ```bash
 # For the standard model
@@ -172,7 +172,7 @@ This starts a local server at http://localhost:6006/ where you can view training
 
 ### 4. Model Performance Comparison
 
-We compared both models using various metrics:
+I compared both models using various metrics:
 
 #### F1 Score Curves
 
@@ -220,4 +220,4 @@ The project dependencies are specified in `Project/requirements.txt`. The main d
 
 ## Results
 
-The hyperparameter-tuned model showed imbalanced little to no improved performance over the standard model, particularly in terms of mAP and F1 score. This is due to our small dataset size and because it is not balanced.
+The hyperparameter-tuned model showed imbalanced little to no improved performance over the standard model, particularly in terms of mAP and F1 score. This is due to my small dataset size and because it is not balanced.
