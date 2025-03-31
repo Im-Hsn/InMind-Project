@@ -263,6 +263,7 @@ The project dependencies are specified in `Project/requirements.txt`. The main d
 - onnxruntime
 - fastapi
 - uvicorn
+- python-multipart
 
 ## Results
 
