@@ -6,6 +6,7 @@ This repository contains the implementation of an object detection system for in
 - [Project Overview](#project-overview)
 - [Part 1: Data Preparation & Visualization](#part-1-data-preparation--visualization)
 - [Part 2: Model Training & Evaluation](#part-2-model-training--evaluation)
+- [Part 3: Model Deployment & Inference](#part-3-model-deployment--inference)
 - [Requirements](#requirements)
 - [Results](#results)
 
@@ -210,58 +211,44 @@ I compared both models using various metrics:
 
 ## Part 3: Model Deployment & Inference
 
-### 1. Export both models into an inference-friendly format (I will be using ONNX)
+### 1. Export Models to ONNX Format
 
-Here's the basic command to export the model:
+I exported both trained models to ONNX format for efficient inference deployment. For the standard model:
 
-
+```bash
 python export.py --weights runs/train/normal_train/weights/best.pt --img-size 640 --batch-size 1 --dynamic --include onnx
+```
 
-this command is for the normal model, and the following is for the hyperparameter tuned one:
+And for the hyperparameter-tuned model:
 
+```bash
 python export.py --weights runs/train/hyper_high_train/weights/best.pt --img-size 640 --batch-size 1 --dynamic --include onnx
+```
 
-Explanation:
+Parameters explanation:
+- `--weights`: Path to the trained model weights
+- `--img-size`: Input image size for inference (matching training size)
+- `--batch-size`: Batch size for the ONNX export (typically 1 for inference)
+- `--dynamic`: Enables dynamic axes for variable input sizes
+- `--include onnx`: Specifies ONNX as the export format
 
---weights: Path to your trained model (e.g., best.pt).
+After running these commands, the ONNX files were saved in the `runs/train/normal_train/weights/` & `runs/train/hyper_high_train/weights/` directory.
 
---img-size: The image size for inference (usually set to the same size as during training, e.g., 640).
+### 2. Network Visualization with Netron
 
---batch-size: Batch size for the ONNX export (usually 1 for inference).
+I used Netron, a web-based neural network visualization tool, to inspect the exported models:
 
---dynamic: Allows dynamic axes (useful for variable input sizes).
+1. I visited the Netron website at https://netron.app
+2. Uploaded my ONNX model files by clicking "Open" in the top-left corner
+3. Navigated to the exported model files in the directory (`best.onnx`) and selected them
 
---include onnx: Specifies the format you want to export to (in this case, ONNX).
-
-After running this command, an ONNX file will be saved in the runs/onnx/ directory, e.g., runs/onnx/exp/weights/model.onnx.
-
-### 2. Visualize both networks using Netron.
-Open Netron
-Netron is a web-based tool that allows you to visualize neural network models, including ONNX, PyTorch, TensorFlow, etc.
-
-Go to the Netron website: https://netron.app.
-
-2. Visualize the ONNX Model
-On the Netron website, you can directly upload your model file.
-
-To visualize the ONNX model you just exported:
-
-Click on "Open" at the top left of the page.
-
-Navigate to your model file best.onnx (which was saved in runs/train/hyper_high_train/weights/).
-
-Select and open the file.
-
-Once opened, Netron will display the architecture of your ONNX model, showing all the layers, parameters, and connections.
-
-this is how the model appeared when loaded into Netron:
+Netron displayed the complete architecture of the models, showing all layers, parameters, and connections.
 
 ![Netron (Normal Model)](./assets/view_ONNX_model.png)
-*Netron website showing the architecture of the standard YOLOv5s model*
+*Netron visualization of the standard YOLOv5s model architecture*
 
 ![Netron (Tuned Model)](./assets/view_ONNX_model2.png)
-*Netron website showing the architecture of the Hyperparameters tuned YOLOv5s model*
-
+*Netron visualization of the hyperparameter-tuned YOLOv5s model architecture*
 
 ## Requirements
 
