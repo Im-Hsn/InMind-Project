@@ -235,6 +235,33 @@ Explanation:
 
 After running this command, an ONNX file will be saved in the runs/onnx/ directory, e.g., runs/onnx/exp/weights/model.onnx.
 
+### 2. Visualize both networks using Netron.
+Open Netron
+Netron is a web-based tool that allows you to visualize neural network models, including ONNX, PyTorch, TensorFlow, etc.
+
+Go to the Netron website: https://netron.app.
+
+2. Visualize the ONNX Model
+On the Netron website, you can directly upload your model file.
+
+To visualize the ONNX model you just exported:
+
+Click on "Open" at the top left of the page.
+
+Navigate to your model file best.onnx (which was saved in runs/train/hyper_high_train/weights/).
+
+Select and open the file.
+
+Once opened, Netron will display the architecture of your ONNX model, showing all the layers, parameters, and connections.
+
+this is how the model appeared when loaded into Netron:
+
+![Netron (Normal Model)](./assets/view_ONNX_model.png)
+*Netron website showing the architecture of the standard YOLOv5s model*
+
+![Netron (Tuned Model)](./assets/view_ONNX_model2.png)
+*Netron website showing the architecture of the Hyperparameters tuned YOLOv5s model*
+
 
 ## Requirements
 
