@@ -38,6 +38,40 @@ CLASS_MAPPING = {
     4: "forklift"
 }
 
+def bbox_iou(box1, box2):
+    x1_min, y1_min, x1_max, y1_max = box1["x1"], box1["y1"], box1["x2"], box1["y2"]
+    x2_min, y2_min, x2_max, y2_max = box2["x1"], box2["y1"], box2["x2"], box2["y2"]
+    
+    intersection_width = max(0, min(x1_max, x2_max) - max(x1_min, x2_min))
+    intersection_height = max(0, min(y1_max, y2_max) - max(y1_min, y2_min))
+    intersection_area = intersection_width * intersection_height
+    
+    box1_area = (x1_max - x1_min) * (y1_max - y1_min)
+    box2_area = (x2_max - x2_min) * (y2_max - y2_min)
+    union_area = box1_area + box2_area - intersection_area
+    
+    if union_area <= 0:
+        return 0
+    return intersection_area / union_area
+
+def non_max_suppression(detections, iou_threshold=0.45):
+    if not detections:
+        return []
+    
+    sorted_detections = sorted(detections, key=lambda x: x["confidence"], reverse=True)
+    filtered_detections = []
+    
+    while sorted_detections:
+        current = sorted_detections.pop(0)
+        filtered_detections.append(current)
+        
+        sorted_detections = [
+            box for box in sorted_detections
+            if box["class_id"] != current["class_id"] or 
+            bbox_iou(current, box) < iou_threshold
+        ]
+        
+    return filtered_detections
 
 def process_yolo_output(output, conf_threshold=0.25):
     predictions = output[0]
@@ -74,7 +108,7 @@ def process_yolo_output(output, conf_threshold=0.25):
             "h": float(h)
         })
     
-    return valid_detections
+    return non_max_suppression(valid_detections)
 
 @app.post("/inference")
 def run_inference(file: UploadFile = File(...)):
