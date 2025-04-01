@@ -357,6 +357,15 @@ cd Project/Part_3
 docker-compose up --build
 ```
 
+![Docker Build Starting](./assets/docker_start.png)
+*Docker Compose build process initiation*
+
+![Docker Build Complete](./assets/docker_end.png)
+*Successful completion of the Docker container build*
+
+![Docker Application Logs](./assets/docker_app.png)
+*Container logs showing API endpoint requests and responses*
+
 Access the API documentation at http://localhost:8000/docs to test the endpoints.
 
 ## Requirements
