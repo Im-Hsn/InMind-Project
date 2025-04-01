@@ -9,12 +9,9 @@ def augment_dataset(image_dir, label_dir, output_dir):
     dataset = BMWObjectDataset(image_dir, label_dir)
     
     transformations = [
-        ("horizontal_flip", A.Compose([A.HorizontalFlip(p=1.0)], 
-                             bbox_params=A.BboxParams(format='pascal_voc', label_fields=['category_ids']))),
-        ("rotate", A.Compose([A.Rotate(limit=30, p=1.0)], 
-                    bbox_params=A.BboxParams(format='pascal_voc', label_fields=['category_ids']))),
-        ("brightness", A.Compose([A.RandomBrightnessContrast(p=1.0)], 
-                        bbox_params=A.BboxParams(format='pascal_voc', label_fields=['category_ids'])))
+        ("horizontal_flip", A.HorizontalFlip(p=1.0)),
+        ("rotate", A.Rotate(limit=30, p=1.0)),
+        ("brightness", A.RandomBrightnessContrast(p=1.0))
     ]
     
     output_image_dir = os.path.join(output_dir, "images")
@@ -39,8 +36,11 @@ def augment_dataset(image_dir, label_dir, output_dir):
         bboxes = [[label["Left"], label["Top"], label["Right"], label["Bottom"]] for label in labels]
         category_ids = [label["ObjectClassId"] for label in labels]
         
-        for _, (_, transform) in enumerate(transformations):
-            augmented = transform(image=image_array, bboxes=bboxes, category_ids=category_ids)
+        for name, transform in transformations:
+            bbox_params = A.BboxParams(format='pascal_voc', label_fields=['category_ids'])
+            processor = A.Compose([transform], bbox_params=bbox_params)
+            
+            augmented = processor(image=image_array, bboxes=bboxes, category_ids=category_ids)
             
             aug_image_path = os.path.join(output_image_dir, f"{image_count}.png")
             Image.fromarray(augmented["image"]).save(aug_image_path)
