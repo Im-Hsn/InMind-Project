@@ -2,7 +2,6 @@ onnx==1.16.1
 onnxruntime
 fastapi
 uvicorn
-python-multipart
 pillow
 numpy
 python-multipart
