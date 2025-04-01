@@ -1,0 +1,11 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../Part_2/yolov5/runs/train/:/app/Part_2/yolov5/runs/train/
+    environment:
+      - MODEL_DIR=Part_2/yolov5/runs/train/

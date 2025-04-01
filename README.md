@@ -248,7 +248,116 @@ Netron displayed the complete architecture of the models, showing all layers, pa
 *Netron visualization of the standard YOLOv5s model architecture*
 
 ![Netron (Tuned Model)](./assets/view_ONNX_model2.png)
-*Netron visualization of the hyperparameter-tuned YOLOv5s model architecture*
+*Netron visualization of the hyperparameter-tuned model architecture*
+
+### 3. REST API Implementation with FastAPI
+
+I developed a REST API using FastAPI to serve the trained object detection models. The API allows for real-time inference on uploaded images, returning both JSON output and visualized results.
+
+#### API Endpoints
+
+The API offers the following endpoints:
+
+1. **`GET /`**: Redirects to the API documentation
+2. **`GET /models`**: Lists all available ONNX models
+3. **`POST /inference`**: Accepts an image and returns detected objects as JSON
+4. **`POST /inference_image`**: Accepts an image and returns the same image with bounding boxes drawn
+
+#### Architecture
+
+The API is built using:
+- **FastAPI**: For creating the REST API endpoints
+- **ONNX Runtime**: For efficient model inference
+- **Pillow**: For image manipulation and drawing bounding boxes
+- **NumPy**: For numerical operations on image data
+
+Key components of the implementation include:
+
+- **Non-Maximum Suppression (NMS)**: Implemented to filter out redundant bounding boxes, ensuring only the highest confidence detection for each object is returned
+- **YOLOv5 Output Processing**: Custom logic to decode the model's output tensor (shape [1, 25200, 10]) into usable bounding boxes, class predictions, and confidence scores
+- **Visualization**: Drawing functionality to display detection results directly on the image
+
+#### Sample JSON Output
+
+```json
+[
+  {
+    "Id": 172779,
+    "ObjectClassName": "cabinet",
+    "ObjectClassId": 2,
+    "Left": 398,
+    "Top": 23,
+    "Right": 652,
+    "Bottom": 427,
+    "x_center": 0.2734,
+    "y_center": 0.2083,
+    "width": 0.1323,
+    "height": 0.3741,
+    "Confidence": 0.8976
+  }
+]
+```
+
+### 4. Docker Containerization
+
+I containerized the API for easy deployment and portability using Docker. The containerization includes:
+
+#### Dockerfile
+
+The Dockerfile specifies a Python 3.10 slim base image and sets up the application:
+
+```dockerfile
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY main.py .
+
+EXPOSE 8000
+
+# Create a directory for model path
+RUN mkdir -p ../Part_2/yolov5/runs/train/normal_train/weights/
+
+# Command to run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+#### Docker Compose
+
+A docker-compose.yml file simplifies the deployment process:
+
+```yaml
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../Part_2/yolov5/runs/train/:/app/Part_2/yolov5/runs/train/
+    environment:
+      - MODEL_DIR=Part_2/yolov5/runs/train/
+```
+
+This configuration:
+- Maps port 8000 from the container to the host
+- Mounts the model directory as a volume
+- Sets the model directory via environment variable
+
+#### Running the Containerized API
+
+To run the API in a Docker container:
+
+```bash
+cd Project/Part_3
+docker-compose up --build
+```
+
+Access the API documentation at http://localhost:8000/docs to test the endpoints.
 
 ## Requirements
 

@@ -14,20 +14,28 @@ def root():
     """Redirect to the API documentation."""
     return RedirectResponse(url="/docs")
 
-MODEL_DIR = "../Part_2/yolov5/runs/train/"
+MODEL_DIR = os.environ.get("MODEL_DIR", "../Part_2/yolov5/runs/train/")
 MODEL_PATH = os.path.join(MODEL_DIR, "normal_train/weights/best.onnx")
 
-session = ort.InferenceSession(MODEL_PATH)
+def load_model():
+    if os.path.exists(MODEL_PATH):
+        return ort.InferenceSession(MODEL_PATH)
+    else:
+        print(f"Warning: Model file not found at {MODEL_PATH}")
+        return None
+
+session = load_model()
 
 @app.get("/models", response_model=List[str])
 def list_models():
     """Endpoint to list available models."""
     models = []
-    for root, dirs, files in os.walk(MODEL_DIR):
-        for file in files:
-            if file.endswith(".onnx"):
-                rel_path = os.path.relpath(os.path.join(root, file), MODEL_DIR)
-                models.append(rel_path)
+    if os.path.exists(MODEL_DIR):
+        for root, dirs, files in os.walk(MODEL_DIR):
+            for file in files:
+                if file.endswith(".onnx"):
+                    rel_path = os.path.relpath(os.path.join(root, file), MODEL_DIR)
+                    models.append(rel_path)
     return models
 
 CLASS_MAPPING = {
