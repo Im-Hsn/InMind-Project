@@ -298,6 +298,20 @@ Key components of the implementation include:
 ]
 ```
 
+### Endpoints Testing Overview
+
+![FastAPI docs](./assets/fastapi_endpoints.png)
+*FastAPI docs page showing project endpoints*
+
+![Models Endpoint](./assets/models_ep.png)
+*'/models' endpoint returning the available models*
+
+![Inference Endpoint](./assets/inference_ep.png)
+*'/inference' endpoint showing the JSON output which includes the bounding boxes*
+
+![Image Inference Endpoint](./assets/image_inference_ep.png)
+*'/inference_image' endpoint showing the image and the returned bounding boxes*
+
 ### 4. Docker Containerization
 
 I containerized the API for easy deployment and portability using Docker. The containerization includes:
