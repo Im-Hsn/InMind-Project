@@ -1,4 +1,4 @@
-# InMind Project: Industrial Object Detection
+# Industrial Object Detection Project
 
 This repository contains the implementation of an object detection system for industrial environments using YOLOv5. The project focuses on detecting objects such as tuggers, cabinets, STRs, boxes, and forklifts.
 
